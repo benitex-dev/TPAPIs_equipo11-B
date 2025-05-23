@@ -5,9 +5,9 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPAPIs_equipo11-B", "TPAPIs_equipo11-B\TPAPIs_equipo11-B.csproj", "{2DF93998-F4C7-4725-B895-64F5B4AECC7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dominio", "..\TPWeb_equipo11-B\dominio\dominio.csproj", "{53EE40E9-073B-4C92-B612-76341AD73761}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dominio", "dominio\dominio.csproj", "{53EE40E9-073B-4C92-B612-76341AD73761}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "negocio", "..\TPWeb_equipo11-B\negocio\negocio.csproj", "{F70D3156-8A27-41CC-AE85-AB96C85E96E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "negocio", "negocio\negocio.csproj", "{F70D3156-8A27-41CC-AE85-AB96C85E96E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
