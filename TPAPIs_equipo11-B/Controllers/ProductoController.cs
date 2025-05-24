@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using TPAPIs_equipo11_B.DTOs;
 
 namespace TPAPIs_equipo11_B.Controllers
 {
@@ -22,13 +23,73 @@ namespace TPAPIs_equipo11_B.Controllers
 
         // GET: api/Producto/5
         public string Get(int id)
-        {
+        {   
             return "value";
         }
 
         // POST: api/Producto
         public void Post([FromBody]string value)
         {
+        }
+        // POST: api/Imagen
+        [Route("api/Producto/Imagenes")]
+        [HttpPost]
+        public HttpResponseMessage PostImg( [FromBody] ImgDTO imagen)
+        {
+            try
+            {
+                negocio = new ArticuloNegocio();
+                ImagenNegocio imagenNegocio = new ImagenNegocio();
+                //Creamos el articulo donde vamos a guardar nuestro listado de imagenes
+                Articulo articulo = new Articulo();
+
+
+                //listamos los productos
+                List<Articulo> articulos = new List<Articulo>();
+                articulos = negocio.listar();
+
+                //en nuestro listado de productos buscamos por id el producto
+                foreach (var art in articulos)
+                {
+                    //si encontramos un producto que coincida con el id que recibimos por parametro,
+                    //guardamos ese producto en la variable de tipo de Articulo
+                    if (art.Id == imagen.IdArticulo)
+                    {
+                        articulo = art;
+                        break;
+                    }
+
+                }
+
+                if (articulo.Id!=0)
+                {
+                    foreach (var urlImg in imagen.Imagenes)
+                    {
+                        Imagen nuevaImagen = new Imagen();
+                        nuevaImagen.IdArticulo = imagen.IdArticulo;
+                        nuevaImagen.URL = urlImg.ToString();
+                        imagenNegocio.agregarImagenArticulo(nuevaImagen);
+                    }
+                    return Request.CreateResponse(HttpStatusCode.OK, "Imagen/es agregada correctamente.");
+
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Por favor debes ingresar un ID de producto valido");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+            
+            
+            
+
+          
         }
 
         // PUT: api/Producto/5

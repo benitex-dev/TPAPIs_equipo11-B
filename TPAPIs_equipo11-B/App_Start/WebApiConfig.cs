@@ -19,6 +19,13 @@ namespace TPAPIs_equipo11_B
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+            // config.Formatters.Remove(config.Formatters.JsonFormatter);
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
+     new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+
+
         }
+
     }
 }
