@@ -141,8 +141,53 @@ namespace TPAPIs_equipo11_B.Controllers
         }
 
         // PUT: api/Producto/5
-        public void Put(int id, [FromBody] string value)
+        public HttpResponseMessage Put(int id, [FromBody] ArticuloDTO articulo)
         {
+
+
+            try
+            {
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                Articulo modificado = new Articulo();
+
+                MarcaNegocio marcaNegocio = new MarcaNegocio();
+                CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+
+                modificado.CodArticulo = articulo.CodArticulo;
+                modificado.Nombre = articulo.Nombre;
+                modificado.Descripcion = articulo.Descripcion;
+                modificado.Marca = new Marca { Id = articulo.IdMarca };
+                modificado.Categoria = new Categoria { Id = articulo.IdCategoria };
+                modificado.Precio = articulo.Precio;
+                modificado.Id = id;
+
+                if (string.IsNullOrEmpty(articulo.CodArticulo) ||
+                    string.IsNullOrEmpty(articulo.Nombre) ||
+                    string.IsNullOrEmpty(articulo.Descripcion) ||
+                    articulo.Precio <= 0)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Todos los campos son requeridos");
+
+
+                Marca marca = marcaNegocio.listar().Find(x => x.Id == articulo.IdMarca);
+                Categoria categoria = categoriaNegocio.listar().Find(x => x.Id == articulo.IdCategoria);
+
+                if (marca == null)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "La marca no existe");
+
+                if (categoria == null)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "La categoría no existe");
+
+                negocio.modificar(modificado);
+
+
+
+                return Request.CreateResponse(HttpStatusCode.OK, "Articulo modificado");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+
         }
 
         // DELETE: api/Producto/5
