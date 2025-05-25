@@ -108,7 +108,15 @@ namespace negocio
 
                     ImagenNegocio ImagenNegocio = new ImagenNegocio();
                     articulo.Imagenes = ImagenNegocio.listarImagenesArticulo(articulo.Id);
-                    articulo.Imagen = articulo.Imagenes[0];
+                    if (articulo.Imagenes != null && articulo.Imagenes.Count > 0)
+                    {
+                        articulo.Imagen = articulo.Imagenes[0];
+                    }
+                    else
+                    {
+                        articulo.Imagen = null;
+                    }
+                   
 
                     articulos.Add(articulo);
                 }
