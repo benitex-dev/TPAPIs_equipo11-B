@@ -22,12 +22,12 @@ namespace TPAPIs_equipo11_B.Controllers
         }
 
         // GET: api/Producto/5
-        public string Get(int id)
+        public Articulo Get(int id)
         {
             negocio = new ArticuloNegocio();
             List<Articulo> lista = negocio.listar();
 
-            return lista.find(x => x.id == id);
+            return lista.Find(x => x.Id == id);
         }
 
         // POST: api/Producto
