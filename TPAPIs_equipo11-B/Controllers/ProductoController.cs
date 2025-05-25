@@ -13,28 +13,69 @@ namespace TPAPIs_equipo11_B.Controllers
     public class ProductoController : ApiController
     {
         ArticuloNegocio negocio;
-        
+
         // GET: api/Producto
         public IEnumerable<Articulo> Get()
-        {   
-            negocio= new ArticuloNegocio(); 
+        {
+            negocio = new ArticuloNegocio();
             return negocio.listar();
         }
 
         // GET: api/Producto/5
         public string Get(int id)
-        {   
+        {
             return "value";
         }
 
         // POST: api/Producto
-        public void Post([FromBody]string value)
+        public HttpResponseMessage Post([FromBody] ArticuloDTO articulo)
         {
+
+
+            try
+            {
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                Articulo nuevo = new Articulo();
+
+                MarcaNegocio marcaNegocio = new MarcaNegocio();
+                CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+
+                nuevo.CodArticulo = articulo.CodArticulo;
+                nuevo.Nombre = articulo.Nombre;
+                nuevo.Descripcion = articulo.Descripcion;
+                nuevo.Marca = new Marca { Id = articulo.IdMarca };
+                nuevo.Categoria = new Categoria { Id = articulo.IdCategoria };
+                nuevo.Precio = articulo.Precio;
+
+                Marca marca = marcaNegocio.listar().Find(x => x.Id == articulo.IdMarca);
+                Categoria categoria = categoriaNegocio.listar().Find(x => x.Id == articulo.IdCategoria);
+
+                if (marca == null)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "La marca no existe");
+
+                if (categoria == null)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "La categoría no existe");
+
+                negocio.agregarArticulo(nuevo);
+
+
+
+                return Request.CreateResponse(HttpStatusCode.OK, "Articulo agregado");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+
+
         }
+
+
+
         // POST: api/Imagen
         [Route("api/Producto/Imagenes")]
         [HttpPost]
-        public HttpResponseMessage PostImg( [FromBody] ImgDTO imagen)
+        public HttpResponseMessage PostImg([FromBody] ImgDTO imagen)
         {
             try
             {
@@ -61,7 +102,7 @@ namespace TPAPIs_equipo11_B.Controllers
 
                 }
 
-                if (articulo.Id!=0)
+                if (articulo.Id != 0)
                 {
                     foreach (var urlImg in imagen.Imagenes)
                     {
@@ -85,15 +126,15 @@ namespace TPAPIs_equipo11_B.Controllers
 
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
             }
-            
-            
-            
 
-          
+
+
+
+
         }
 
         // PUT: api/Producto/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
         }
 

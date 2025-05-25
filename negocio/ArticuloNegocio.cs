@@ -40,7 +40,12 @@ namespace negocio
 
             try
             {
-                accesoDatos.setConsulta("INSERT INTO ARTICULOS (Codigo,Nombre,Descripcion,Precio,IdCategoria,IdMarca)values('"+articulo.CodArticulo+"','"+articulo.Nombre+"','"+articulo.Descripcion+"',"+articulo.Precio+",@IdCategoria,@IdMarca)");
+                //accesoDatos.setConsulta("INSERT INTO ARTICULOS (Codigo,Nombre,Descripcion,Precio,IdCategoria,IdMarca)values('"+articulo.CodArticulo+"','"+articulo.Nombre+"','"+articulo.Descripcion+"',"+articulo.Precio+",@IdCategoria,@IdMarca)");
+                accesoDatos.setConsulta("INSERT INTO ARTICULOS (Codigo,Nombre,Descripcion,Precio,IdCategoria,IdMarca)values(@Codigo, @Nombre, @Descripcion, @Precio, @IdCategoria,@IdMarca)");
+                accesoDatos.setParametro("@Codigo", articulo.CodArticulo);
+                accesoDatos.setParametro("@Nombre", articulo.Nombre);
+                accesoDatos.setParametro("@Descripcion", articulo.Descripcion);
+                accesoDatos.setParametro("@Precio", articulo.Precio);
                 accesoDatos.setParametro("@IdCategoria", articulo.Categoria.Id);
                 accesoDatos.setParametro("@IdMarca", articulo.Marca.Id);
                 accesoDatos.ejecutarAccion();
