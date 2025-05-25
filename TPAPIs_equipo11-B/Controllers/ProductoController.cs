@@ -24,7 +24,10 @@ namespace TPAPIs_equipo11_B.Controllers
         // GET: api/Producto/5
         public string Get(int id)
         {
-            return "value";
+            negocio = new ArticuloNegocio();
+            List<Articulo> lista = negocio.listar();
+
+            return lista.find(x => x.id == id);
         }
 
         // POST: api/Producto
@@ -193,6 +196,8 @@ namespace TPAPIs_equipo11_B.Controllers
         // DELETE: api/Producto/5
         public void Delete(int id)
         {
+            ArticuloNegocio negocio = new ArticuloNegocio();
+            negocio.eliminarArticulo(id);
         }
     }
 }
