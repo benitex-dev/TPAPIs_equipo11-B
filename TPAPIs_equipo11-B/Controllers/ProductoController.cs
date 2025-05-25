@@ -47,6 +47,13 @@ namespace TPAPIs_equipo11_B.Controllers
                 nuevo.Categoria = new Categoria { Id = articulo.IdCategoria };
                 nuevo.Precio = articulo.Precio;
 
+                if (string.IsNullOrEmpty(articulo.CodArticulo) ||
+                    string.IsNullOrEmpty(articulo.Nombre) ||
+                    string.IsNullOrEmpty(articulo.Descripcion) ||
+                    articulo.Precio <= 0)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Todos los campos son requeridos");
+                    
+
                 Marca marca = marcaNegocio.listar().Find(x => x.Id == articulo.IdMarca);
                 Categoria categoria = categoriaNegocio.listar().Find(x => x.Id == articulo.IdCategoria);
 
@@ -60,7 +67,7 @@ namespace TPAPIs_equipo11_B.Controllers
 
 
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Articulo agregado");
+                return Request.CreateResponse(HttpStatusCode.Created, "Articulo agregado");
             }
             catch (Exception ex)
             {
