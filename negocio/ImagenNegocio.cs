@@ -9,20 +9,24 @@ namespace negocio
 {
     public class ImagenNegocio
     {
-        public List<Imagen> listarImagenesArticulo(int id)
+        public List<Imagen> listarImagenesArticulo(int idArticulo)
         {
             List<Imagen> listaImagen = new List<Imagen>();
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                datos.setConsulta("select ImagenUrl from IMAGENES WHERE IDARTICULO ='" + id + "'");
+                datos.setConsulta("select ImagenUrl, id from IMAGENES WHERE IDARTICULO ='" + idArticulo + "'");
                 datos.ejecutarLectura();
 
 
                 while (datos.Lector.Read())
                 {
                     Imagen imagen = new Imagen();
+
+                    imagen.Id = (int)datos.Lector["id"];
+
+                    imagen.IdArticulo = idArticulo;
                   
                     imagen.URL = (string)datos.Lector["ImagenUrl"];
 
