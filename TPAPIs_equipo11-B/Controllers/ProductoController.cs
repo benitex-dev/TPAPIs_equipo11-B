@@ -118,6 +118,10 @@ namespace TPAPIs_equipo11_B.Controllers
                     {
                         Imagen nuevaImagen = new Imagen();
                         nuevaImagen.IdArticulo = imagen.IdArticulo;
+                        if (string.IsNullOrEmpty(urlImg))
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "No se permite texto vacio");
+                        }
                         nuevaImagen.URL = urlImg.ToString();
                         imagenNegocio.agregarImagenArticulo(nuevaImagen);
                     }
